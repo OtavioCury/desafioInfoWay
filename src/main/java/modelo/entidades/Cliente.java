@@ -11,12 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 /**
  * Entity implementation class for Entity: Cliente
  *
  */
 @Entity
-
+@JsonAutoDetect
 public class Cliente implements Serializable {
 
 	@Id

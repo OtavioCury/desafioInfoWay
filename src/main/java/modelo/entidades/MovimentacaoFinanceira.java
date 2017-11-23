@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import modelo.enuns.Operacao;
 
 /**
@@ -16,7 +18,7 @@ import modelo.enuns.Operacao;
  *
  */
 @Entity
-
+@JsonAutoDetect
 public class MovimentacaoFinanceira implements Serializable {
 
 	@Id
@@ -67,5 +69,4 @@ public class MovimentacaoFinanceira implements Serializable {
 			return false;
 		return true;
 	}
-
 }

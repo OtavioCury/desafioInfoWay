@@ -2,6 +2,8 @@ package dao;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import modelo.entidades.Cliente;
@@ -36,6 +38,23 @@ public class ClienteDAO extends GenericDAO<Cliente, Cliente>{
 		List<Conta> contas = null;
 		contas = query.getResultList();
 		return contas;
+	}
+
+	/**
+	 * Busca um banco pelo nome
+	 * @param nome
+	 * @return
+	 */
+	public Cliente buscarNome(String nome) {
+		Query query = getEm().createQuery("SELECT c FROM cliente c WHERE c.nome = :nome");
+		query.setParameter("nome", nome);
+		Cliente cliente = null;
+		try {
+			cliente = (Cliente) query.getSingleResult();
+		} catch (NoResultException ex) {
+			ex.printStackTrace();
+		}
+		return cliente;
 	}
 
 }
