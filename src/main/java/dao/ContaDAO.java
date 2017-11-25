@@ -8,7 +8,7 @@ import javax.persistence.TypedQuery;
 
 import modelo.entidades.Conta;
 
-public class ContaDAO extends GenericDAO<Conta, Conta>{
+public class ContaDAO extends GenericDAO<Conta>{
 	/**
 	 * 
 	 */

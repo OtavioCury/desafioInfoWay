@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
  *
  */
 @Entity
-@JsonAutoDetect
+@JsonAutoDetect 
 public class Banco implements Serializable {
 
 	@Id

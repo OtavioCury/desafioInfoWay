@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-public class GenericDAO<T, S> implements Serializable {
+public class GenericDAO<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,6 +24,8 @@ public class GenericDAO<T, S> implements Serializable {
 
 	public GenericDAO(Class<T> entityClass) {
 		this.entityClass = entityClass;
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("BancoInfoWay");
+		em = entityManagerFactory.createEntityManager();
 	}
 	public EntityManager getEm() {
 		return em;
@@ -49,7 +53,9 @@ public class GenericDAO<T, S> implements Serializable {
 	}
 
 	public void save(T entity) {
+		em.getTransaction().begin();
 		em.persist(entity);
+		em.getTransaction().commit();
 	}    
 
 	public List<T> findAll() {

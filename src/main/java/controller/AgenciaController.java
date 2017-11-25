@@ -27,7 +27,7 @@ public class AgenciaController {
 		agenciaDAO = new AgenciaDAO();
 	}
 
-	@RequestMapping(value = "/agencias", method = RequestMethod.GET, produces = "{application/json}")
+	@RequestMapping(value = "/agencias", method = RequestMethod.GET)
 	public ResponseEntity<List<Agencia>> agencias(){
 		return new ResponseEntity<List<Agencia>>(agenciaDAO.findAll(), HttpStatus.OK);
 	}

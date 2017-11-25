@@ -6,7 +6,7 @@ import javax.persistence.TypedQuery;
 
 import modelo.entidades.Agencia;
 
-public class AgenciaDAO extends GenericDAO<Agencia, Agencia>{
+public class AgenciaDAO extends GenericDAO<Agencia>{
 	/**
 	 * 
 	 */

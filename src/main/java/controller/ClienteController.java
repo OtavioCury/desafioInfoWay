@@ -24,7 +24,7 @@ public class ClienteController {
 		clienteDAO = new ClienteDAO();
 	}
 
-	@RequestMapping(value = "/adicionaCliente", method = RequestMethod.POST, consumes = "{application/json}")
+	@RequestMapping(value = "/adicionaCliente", method = RequestMethod.POST)
 	public ResponseEntity<Void> adicionaCliente(@RequestBody Cliente cliente){
 		if (clienteDAO.buscarNome(cliente.getNome()) == null) {
 			clienteDAO.adicionaCliente(cliente);

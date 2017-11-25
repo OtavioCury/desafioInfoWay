@@ -27,7 +27,7 @@ public class ContaController {
 		contaDAO = new ContaDAO();
 	}
 
-	@RequestMapping(value = "/adicionaConta", method = RequestMethod.POST, consumes = "{application/json}")
+	@RequestMapping(value = "/adicionaConta", method = RequestMethod.POST)
 	public ResponseEntity<Void> adicionaConta(@RequestBody Conta conta){
 		List<Conta> contas = new ArrayList<Conta>();
 		contas = contaDAO.contasPorAgencia(conta.getAgencia().getId());
@@ -40,7 +40,7 @@ public class ContaController {
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/atualizaConta", method = RequestMethod.POST, consumes = "{application/json}")
+	@RequestMapping(value = "/atualizaConta", method = RequestMethod.POST)
 	public ResponseEntity<Void> atualizaConta(@RequestBody Conta conta){
 		contaDAO.update(conta);
 		return new ResponseEntity<Void>(HttpStatus.OK);

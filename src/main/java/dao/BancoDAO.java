@@ -1,15 +1,23 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.springframework.stereotype.Repository;
 
 import modelo.entidades.Agencia;
 import modelo.entidades.Banco;
 
-public class BancoDAO extends GenericDAO<Banco, Banco>{
+@Repository
+public class BancoDAO extends GenericDAO<Banco>{
 
 	/**
 	 * 
@@ -18,14 +26,6 @@ public class BancoDAO extends GenericDAO<Banco, Banco>{
 
 	public BancoDAO() {
 		super(Banco.class);
-	}
-
-	public void deletarBanco(Long id){
-		super.delete(id, Banco.class);
-	}
-
-	public void adicionaBanco(Banco banco){
-		super.save(banco);
 	}
 
 	/**
@@ -42,13 +42,13 @@ public class BancoDAO extends GenericDAO<Banco, Banco>{
 	 * @return
 	 */
 	public Banco buscarNome(String nome) {
-		Query query = getEm().createQuery("SELECT b FROM banco b WHERE b.nome = :nome");
+		Query query = getEm().createQuery("SELECT b FROM Banco b WHERE b.nome = :nome");
 		query.setParameter("nome", nome);
 		Banco banco = null;
 		try {
 			banco = (Banco) query.getSingleResult();
 		} catch (NoResultException ex) {
-			ex.printStackTrace();
+			return null;
 		}
 		return banco;
 	}
@@ -59,10 +59,20 @@ public class BancoDAO extends GenericDAO<Banco, Banco>{
 	 * @return
 	 */
 	public List<Agencia> todasAgencias(Long id){
-		TypedQuery<Agencia> query = getEm().createQuery("SELECT a FROM agencia a WHERE a.banco_id = :id", Agencia.class);
-		query.setParameter("id", id);
-		List<Agencia> agencias = null;
-		agencias = query.getResultList();
-		return agencias;
+		CriteriaBuilder cb = getEm().getCriteriaBuilder();
+		CriteriaQuery<Agencia> cq = cb.createQuery(Agencia.class);
+		Root<Agencia> root = cq.from(Agencia.class);
+
+		CriteriaQuery<Agencia> query = cq.select(root);
+
+		List<Predicate> predicados = new ArrayList<Predicate>();		
+
+		predicados.add(cb.equal(root.get("banco"), id));
+
+		query.where(predicados.toArray(new Predicate[]{}));
+
+		TypedQuery<Agencia> tq = getEm().createQuery(query);
+
+		return tq.getResultList();
 	}
 }

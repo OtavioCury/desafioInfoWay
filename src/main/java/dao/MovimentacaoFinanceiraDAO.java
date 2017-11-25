@@ -2,7 +2,7 @@ package dao;
 
 import modelo.entidades.MovimentacaoFinanceira;
 
-public class MovimentacaoFinanceiraDAO extends GenericDAO<MovimentacaoFinanceira, MovimentacaoFinanceira>{
+public class MovimentacaoFinanceiraDAO extends GenericDAO<MovimentacaoFinanceira>{
 	/**
 	 * 
 	 */

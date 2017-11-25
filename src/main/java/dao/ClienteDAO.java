@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import modelo.entidades.Cliente;
 import modelo.entidades.Conta;
 
-public class ClienteDAO extends GenericDAO<Cliente, Cliente>{
+public class ClienteDAO extends GenericDAO<Cliente>{
 	/**
 	 * 
 	 */
