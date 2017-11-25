@@ -1,7 +1,10 @@
 package dao;
 
+import org.springframework.stereotype.Repository;
+
 import modelo.entidades.MovimentacaoFinanceira;
 
+@Repository
 public class MovimentacaoFinanceiraDAO extends GenericDAO<MovimentacaoFinanceira>{
 	/**
 	 * 

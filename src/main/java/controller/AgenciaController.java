@@ -3,41 +3,48 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import dao.AgenciaDAO;
+import dao.BancoDAO;
 import modelo.entidades.Agencia;
 
 @Controller
 @RequestMapping("/agencia")
 public class AgenciaController {
 
+	@Autowired
 	private AgenciaDAO agenciaDAO;
+	@Autowired
+	private BancoDAO bancoDAO;
 
-	@PostConstruct
-	private void init() {
-		// TODO Auto-generated method stub
-		agenciaDAO = new AgenciaDAO();
-	}
-
+	/**
+	 * Lista todas as agências
+	 * @return
+	 */
 	@RequestMapping(value = "/agencias", method = RequestMethod.GET)
-	public ResponseEntity<List<Agencia>> agencias(){
-		return new ResponseEntity<List<Agencia>>(agenciaDAO.findAll(), HttpStatus.OK);
+	public @ResponseBody List<Agencia> agencias(){
+		return agenciaDAO.findAll();
 	}
 
-	@RequestMapping(value = "/adicionaAgencia", method = RequestMethod.POST)
+	/**
+	 * Adiciona uma agencia
+	 * @param agencia
+	 * @return
+	 */
+	@RequestMapping(value = "/adiciona-agencia", method = RequestMethod.POST)
 	public ResponseEntity<Void> adicionaAgencia(@RequestBody Agencia agencia){
 		List<Agencia> agencias = new ArrayList<Agencia>();
-		agencias = agenciaDAO.agenciasPorBanco(agencia.getBanco().getId());
+		agencias = bancoDAO.todasAgencias(agencia.getBanco().getId());
 		for (Agencia agenciaAux : agencias) {
-			if (agenciaAux.getNumero() == agencia.getNumero()) {
+			if (agenciaAux.getNumero().equals(agencia.getNumero())) {
 				return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 			}
 		}

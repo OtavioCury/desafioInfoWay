@@ -1,13 +1,20 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.springframework.stereotype.Repository;
 
 import modelo.entidades.Conta;
 
+@Repository
 public class ContaDAO extends GenericDAO<Conta>{
 	/**
 	 * 
@@ -33,16 +40,23 @@ public class ContaDAO extends GenericDAO<Conta>{
 	 * @return
 	 */
 	public Conta login(String numero, String senha) {
-		Query query = getEm().createQuery("SELECT c FROM conta c WHERE c.numero = :numero and c.senha = :senha");
-		query.setParameter("numero", numero);
-		query.setParameter("senha", senha);
-		Conta conta = null;
+		CriteriaBuilder cb = getEm().getCriteriaBuilder();
+		CriteriaQuery<Conta> cq = cb.createQuery(Conta.class);
+		Root<Conta> root = cq.from(Conta.class);
+
+		CriteriaQuery<Conta> query = cq.select(root);
+
+		Predicate predicado = cb.and(cb.equal(root.get("numero"), numero), cb.equal(root.get("senha"), senha));
+
+		query.where(predicado);
+
+		TypedQuery<Conta> tq = getEm().createQuery(query);
+
 		try {
-			conta = (Conta) query.getSingleResult();
-		} catch (NoResultException ex) {
-			ex.printStackTrace();
+			return tq.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
 		}
-		return conta;
 	}
 
 	/**
@@ -51,10 +65,20 @@ public class ContaDAO extends GenericDAO<Conta>{
 	 * @return
 	 */
 	public List<Conta> contasPorAgencia(Long id){
-		TypedQuery<Conta> query = getEm().createQuery("SELECT c FROM conta c WHERE c.agencia_id = :id", Conta.class);
-		query.setParameter("id", id);
-		List<Conta> contas = null;
-		contas = query.getResultList();
-		return contas;
+		CriteriaBuilder cb = getEm().getCriteriaBuilder();
+		CriteriaQuery<Conta> cq = cb.createQuery(Conta.class);
+		Root<Conta> root = cq.from(Conta.class);
+
+		CriteriaQuery<Conta> query = cq.select(root);
+
+		List<Predicate> predicados = new ArrayList<Predicate>();		
+
+		predicados.add(cb.equal(root.get("agencia"), id));
+
+		query.where(predicados.toArray(new Predicate[]{}));
+
+		TypedQuery<Conta> tq = getEm().createQuery(query);
+
+		return tq.getResultList();
 	}
 }

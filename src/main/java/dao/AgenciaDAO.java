@@ -1,11 +1,10 @@
 package dao;
 
-import java.util.List;
-
-import javax.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
 
 import modelo.entidades.Agencia;
 
+@Repository
 public class AgenciaDAO extends GenericDAO<Agencia>{
 	/**
 	 * 
@@ -22,18 +21,5 @@ public class AgenciaDAO extends GenericDAO<Agencia>{
 
 	public void adicionaAgencia(Agencia agencia){
 		super.save(agencia);
-	}
-
-	/**
-	 * Busca todas as agências de um banco
-	 * @param id
-	 * @return
-	 */
-	public List<Agencia> agenciasPorBanco(Long id){
-		TypedQuery<Agencia> query = getEm().createQuery("SELECT a FROM agencia a WHERE a.banco_id = :id", Agencia.class);
-		query.setParameter("id", id);
-		List<Agencia> agencias = null;
-		agencias = query.getResultList();
-		return agencias;
 	}
 }

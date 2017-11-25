@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
@@ -27,6 +28,9 @@ public class MovimentacaoFinanceira implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private Operacao operacao;
+	
+	@ManyToOne
+	private Conta conta;
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,6 +49,12 @@ public class MovimentacaoFinanceira implements Serializable {
 	}
 	public void setOperacao(Operacao operacao) {
 		this.operacao = operacao;
+	}
+	public Conta getConta() {
+		return conta;
+	}
+	public void setConta(Conta conta) {
+		this.conta = conta;
 	}
 	@Override
 	public int hashCode() {

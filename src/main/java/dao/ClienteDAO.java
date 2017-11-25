@@ -1,14 +1,21 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.springframework.stereotype.Repository;
 
 import modelo.entidades.Cliente;
 import modelo.entidades.Conta;
 
+@Repository
 public class ClienteDAO extends GenericDAO<Cliente>{
 	/**
 	 * 
@@ -17,14 +24,6 @@ public class ClienteDAO extends GenericDAO<Cliente>{
 
 	public ClienteDAO() {
 		super(Cliente.class);
-	}
-
-	public void deletarCliente(Long id){
-		super.delete(id, Cliente.class);
-	}
-
-	public void adicionaCliente(Cliente cliente){
-		super.save(cliente);
 	}
 
 	/**
@@ -46,15 +45,25 @@ public class ClienteDAO extends GenericDAO<Cliente>{
 	 * @return
 	 */
 	public Cliente buscarNome(String nome) {
-		Query query = getEm().createQuery("SELECT c FROM cliente c WHERE c.nome = :nome");
-		query.setParameter("nome", nome);
-		Cliente cliente = null;
+		CriteriaBuilder cb = getEm().getCriteriaBuilder();
+		CriteriaQuery<Cliente> cq = cb.createQuery(Cliente.class);
+		Root<Cliente> root = cq.from(Cliente.class);
+
+		CriteriaQuery<Cliente> query = cq.select(root);
+
+		List<Predicate> predicados = new ArrayList<Predicate>();		
+
+		predicados.add(cb.equal(root.get("nome"), nome));
+
+		query.where(predicados.toArray(new Predicate[]{}));
+
+		TypedQuery<Cliente> tq = getEm().createQuery(query);
+
 		try {
-			cliente = (Cliente) query.getSingleResult();
-		} catch (NoResultException ex) {
-			ex.printStackTrace();
+			return tq.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
 		}
-		return cliente;
 	}
 
 }

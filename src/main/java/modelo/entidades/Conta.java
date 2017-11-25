@@ -1,9 +1,7 @@
 package modelo.entidades;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -30,14 +27,12 @@ public class Conta implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToMany(cascade = CascadeType.REMOVE)
-	private List<MovimentacaoFinanceira> movimentacoes;
-
 	@Enumerated(EnumType.STRING)
 	private TipoConta tipoConta;
 
 	@ManyToOne
 	private Cliente cliente;
+
 	@ManyToOne
 	private Agencia agencia;
 
@@ -51,17 +46,9 @@ public class Conta implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public Conta() {
-		super();
 	}   
 	public Long getId() {
 		return this.id;
-	}
-
-	public List<MovimentacaoFinanceira> getMovimentacoes() {
-		return movimentacoes;
-	}
-	public void setMovimentacoes(List<MovimentacaoFinanceira> movimentacoes) {
-		this.movimentacoes = movimentacoes;
 	}
 	public void setId(Long id) {
 		this.id = id;

@@ -31,8 +31,10 @@ public class GenericDAO<T> implements Serializable {
 		return em;
 	}
 
-	public T update(T entity) {
-		return em.merge(entity);
+	public void update(T entity) {
+		em.getTransaction().begin();
+		em.merge(entity);
+		em.getTransaction().commit();
 	}
 
 	public T find(long entityID) {
