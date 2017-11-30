@@ -29,6 +29,7 @@ public class BancoController {
 	 */
 	@RequestMapping(value = "/bancos", method = RequestMethod.GET)
 	public @ResponseBody List<Banco> bancos(){
+		System.out.println("Teste");
 		return bancoDAO.findAll();
 	}
 
@@ -53,7 +54,7 @@ public class BancoController {
 	 * @return
 	 */
 	@RequestMapping(value = "/todas-agencias/{id}", method = RequestMethod.GET)
-	public @ResponseBody List<Agencia> todasAgencias(@PathVariable Long id){
-		return bancoDAO.todasAgencias(id);
+	public @ResponseBody List<Agencia> todasAgencias(@PathVariable String id){
+		return bancoDAO.todasAgencias(Long.parseLong(id));
 	}
 }

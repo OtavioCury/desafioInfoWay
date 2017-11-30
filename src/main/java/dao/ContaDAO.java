@@ -58,6 +58,31 @@ public class ContaDAO extends GenericDAO<Conta>{
 			return null;
 		}
 	}
+	
+	/**
+	 * Busca conta por número
+	 * @param numero
+	 * @return
+	 */
+	public Conta contaNumero(String numero) {
+		CriteriaBuilder cb = getEm().getCriteriaBuilder();
+		CriteriaQuery<Conta> cq = cb.createQuery(Conta.class);
+		Root<Conta> root = cq.from(Conta.class);
+
+		CriteriaQuery<Conta> query = cq.select(root);
+
+		Predicate predicado = cb.equal(root.get("numero"), numero);
+
+		query.where(predicado);
+
+		TypedQuery<Conta> tq = getEm().createQuery(query);
+
+		try {
+			return tq.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 
 	/**
 	 * Busca todas as contas de uma agência

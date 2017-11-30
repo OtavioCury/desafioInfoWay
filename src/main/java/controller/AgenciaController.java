@@ -48,7 +48,7 @@ public class AgenciaController {
 				return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 			}
 		}
-		agenciaDAO.adicionaAgencia(agencia);
+		agenciaDAO.save(agencia);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 }
